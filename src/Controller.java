@@ -9,6 +9,7 @@ import javafx.scene.control.Label;
 
 import javax.script.ScriptEngine;
 import javax.script.ScriptEngineManager;
+import java.lang.reflect.Array;
 import java.net.URL;
 import java.util.*;
 
@@ -22,7 +23,6 @@ public class Controller implements Initializable
     @FXML
     public void add(ActionEvent event){
         String added = ((Button)event.getSource()).getText();
-
         curr+=added;
         calc.setValue(curr);
     }
@@ -32,51 +32,150 @@ public class Controller implements Initializable
     }
     public void calculate(){
         char[] input= curr.toCharArray();
-        ArrayList<Character> finalArray = new ArrayList<>();
-        ArrayList<Character> temp = new ArrayList<>();
+        ArrayList<String> finalArray = new ArrayList<>();
+        Stack<Character> temp = new Stack<>();
         String lol = "";
+        String last = "";
         for(int i=0;i<input.length;i++){
             char curr=input[i];
+            if(!Character.isDigit(curr)&&curr!='e'&&curr!='π'){
+                last="";
+            }
             if(Character.isDigit(curr)||curr=='e'||curr=='π'){
-                finalArray.add(curr);
+                try {
+                    if (last.equals("")) {
+                        finalArray.add(Character.toString(curr));
+                        last = Character.toString(curr);
+                    } else {
+                        finalArray.remove(finalArray.size() - 1);
+                        last += Character.toString(curr);
+                        finalArray.add(last);
+                    }
+                }catch (Exception e) {
+                    e.printStackTrace();
+                }
             }else if (curr=='*'){
-
+                for(int p=0;p<temp.size();p++){
+                    if(temp.peek().equals('*')||temp.peek().equals('/')){
+                        finalArray.add(temp.pop().toString());
+                    }else
+                        break;
+                }temp.add('*');
             }else if (curr=='/'){
+                for(int p=0;p<temp.size();p++){
+                    if(temp.peek().equals('*')||temp.peek().equals('/')){
+                        finalArray.add(temp.pop().toString());
+                    }else{
+                        temp.add('/');
+                        break;
+                    }
 
+                }temp.add('/');
             }else if (curr=='^'){
+                temp.add('^');
+            }else if (curr=='('){
+                temp.add('(');
+            }else if (curr==')'){
+                for (int p=0;p<temp.size();p++){
+                    try {
+                        if (!temp.peek().equals('(')) {
+                            finalArray.add(temp.pop().toString());
+                        } else {
+                            temp.pop();
+                            break;
+                        }
+                    }catch (Exception e){
+                        e.printStackTrace();
+                        System.out.println("Pas de parenthèse qui match");
+                    }
 
+                }
             }else if (curr=='-'){
-
+                for(int p=0;p<temp.size();p++){
+                    if(temp.peek().equals('-')||temp.peek().equals('+')){
+                        finalArray.add(temp.pop().toString());
+                    }
+                }temp.add('-');
             }else if (curr=='+'){
-                temp.add(curr);
-            }else if (curr=='s'||curr=='i'||curr=='n'||curr=='o'||curr=='t'||curr=='a'||curr=='r'){
-                lol+=(Character.toString(curr));
-               if(lol.equals("sin")) {
-                   temp.add('s');
-                   lol="";
-               }
-                if(lol.equals("cos")) {
-                    temp.add('c');lol="";
+                for(int p=0;p<temp.size();p++){
+                    if(temp.peek().equals('-')||temp.peek().equals('+')){
+                        finalArray.add(temp.pop().toString());
+                    }
+                }temp.add('+');
+            }else if (curr=='s'||curr=='i'||curr=='n'||curr=='o'||curr=='t'||curr=='a'||curr=='r') {
+                    lol += (Character.toString(curr));
+                    if (lol.equals("sin")) {
+                        temp.add('s');
+                        lol = "";
+                    }
+                    if (lol.equals("cos")) {
+                        temp.add('c');
+                        lol = "";
+                    }
+                    if (lol.equals("tan")) {
+                        temp.add('t');
+                        lol = "";
+                    }
+                    if (lol.equals("arcsin")) {
+                        temp.add('j');
+                        lol = "";
+                    }
+                    if (lol.equals("arccos")) {
+                        temp.add('k');
+                        lol = "";
+                    }
+                    if (lol.equals("arctan")) {
+                        temp.add('l');
+                        lol = "";
+                    }
+                    if (lol.equals("rac")) {
+                        temp.add('r');
+                        lol = "";
+                    }
                 }
-                if(lol.equals("tan")) {
-                    temp.add('t');lol="";
-                }if(lol.equals("arcsin")) {
-                    temp.add('j');lol="";
-                }if(lol.equals("arccos")) {
-                    temp.add('k');lol="";
-                }
-                if(lol.equals("arctan")) {
-                    temp.add('l');lol="";
-                }
-                if(lol.equals("rac")) {
-                    temp.add('r');lol="";
-                }
+            }
 
+        for (int i =0;i<temp.size();i++){
+            finalArray.add(temp.pop().toString());
+        }
+        curr=(finalArray.toString());
+        calc.setValue(curr);
+        System.out.println("Fini le string");
+        boolean solved=false;
+        String leFirst="";
+        String leSecond="";
+        String loperator="";
+        while(!solved){
+            for(int i=0;i<finalArray.size();i++) {
+                String temp1 = finalArray.get(i);
+                if (loperator.equals("")||temp1.equals("arcsin") || temp1.equals("arccos") || temp1.equals("arctan") || temp1.equals("rac") || temp1.equals("*") || temp1.equals("^") || temp1.equals("%") || temp1.equals("-") || temp1.equals("+") || temp1.equals("/")) {
+                    loperator = temp1;
+                } else {
+                    if (leFirst.equals("")) {
+                        leFirst = temp1;
+                    } else if (leSecond.equals("")) {
+                        leSecond = temp1;
+                    }
+                }
+                if(!leFirst.equals("")&&!leSecond.equals("")&&!loperator.equals("")){
+                    Double.parseDouble(leFirst)
+                }
             }
         }
+
     }
     public void remove(){
-
+        try {
+            int wow = curr.length();
+            curr = curr.substring(0, wow - 1);
+            calc.setValue(curr);
+        }catch (Exception e){
+            System.out.println("Pu rien a enlever");
+        }
+    }
+    public void eraseAll(){
+        curr="";
+        calc.setValue("");
     }
     public StringProperty calcProperty(){
         return calc;
