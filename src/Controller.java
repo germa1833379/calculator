@@ -55,14 +55,16 @@ public class Controller implements Initializable
                     e.printStackTrace();
                 }
             }else if (curr=='*'){
-                for(int p=0;p<temp.size();p++){
+                int sizeTemp=temp.size();
+                for (int p =0;p<sizeTemp;p++){
                     if(temp.peek().equals('*')||temp.peek().equals('/')){
                         finalArray.add(temp.pop().toString());
                     }else
                         break;
                 }temp.add('*');
             }else if (curr=='/'){
-                for(int p=0;p<temp.size();p++){
+                int sizeTemp=temp.size();
+                for (int p =0;p<sizeTemp;p++){
                     if(temp.peek().equals('*')||temp.peek().equals('/')){
                         finalArray.add(temp.pop().toString());
                     }else{
@@ -76,7 +78,8 @@ public class Controller implements Initializable
             }else if (curr=='('){
                 temp.add('(');
             }else if (curr==')'){
-                for (int p=0;p<temp.size();p++){
+                int sizeTemp=temp.size();
+                for (int p =0;p<sizeTemp;p++){
                     try {
                         if (!temp.peek().equals('(')) {
                             finalArray.add(temp.pop().toString());
@@ -91,13 +94,15 @@ public class Controller implements Initializable
 
                 }
             }else if (curr=='-'){
-                for(int p=0;p<temp.size();p++){
+                int sizeTemp=temp.size();
+                for (int p =0;p<sizeTemp;p++){
                     if(temp.peek().equals('-')||temp.peek().equals('+')){
                         finalArray.add(temp.pop().toString());
                     }
                 }temp.add('-');
             }else if (curr=='+'){
-                for(int p=0;p<temp.size();p++){
+                int sizeTemp=temp.size();
+                for (int p =0;p<sizeTemp;p++){
                     if(temp.peek().equals('-')||temp.peek().equals('+')){
                         finalArray.add(temp.pop().toString());
                     }
@@ -134,9 +139,10 @@ public class Controller implements Initializable
                     }
                 }
             }
-
-        for (int i =0;i<temp.size();i++){
-            finalArray.add(temp.pop().toString());
+            int sizeTemp=temp.size();
+        for (int i =0;i<sizeTemp;i++){
+            finalArray.add(temp.get(sizeTemp-1-i).toString());
+            temp.remove(sizeTemp-i-1);
         }
         System.out.println((finalArray.toString()));
         System.out.println("Fini le string");

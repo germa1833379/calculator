@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ProgrammeurController">
+   <children>
+      <TabPane prefHeight="400.0" prefWidth="600.0" tabClosingPolicy="UNAVAILABLE" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <tabs>
+          <Tab text="Conversion">
+               <content>
+                  <BorderPane prefHeight="400.0" prefWidth="600.0">
+                     <center>
+                        <VBox prefHeight="194.0" prefWidth="279.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <TextArea fx:id="tA" onKeyReleased="#refresh" prefHeight="106.0" prefWidth="600.0" wrapText="true" />
+                              <Label fx:id="label" alignment="TOP_LEFT" prefHeight="163.0" prefWidth="602.0" text="Binairy shit" wrapText="true" />
+                           </children>
+                        </VBox>
+                     </center>
+                     <top>
+                        <HBox alignment="CENTER" prefHeight="48.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label text="Conversion" />
+                              <ChoiceBox fx:id="choiceBox" onMouseMoved="#refresh" prefWidth="120.0" value="Binaire">
+                                 <items>
+                                    <FXCollections fx:factory="observableArrayList">
+                                       <String fx:value="Binaire" />
+                                       <String fx:value="Octal" />
+                                       <String fx:value="Décimal" />
+                                        <String fx:value="HexaDécimal" />
+                                    </FXCollections>
+                                 </items>
+                              </ChoiceBox>
+                           </children>
+                        </HBox>
+                     </top>
+                  </BorderPane>
+               </content>
+            </Tab>
+          <Tab text="Opération Binaires">
+               <content>
+                  <BorderPane prefHeight="200.0" prefWidth="200.0">
+                     <top>
+                        <TextArea fx:id="textArea" prefHeight="308.0" prefWidth="600.0" promptText="Code binaire" wrapText="true" BorderPane.alignment="CENTER" />
+                     </top>
+                     <center>
+                        <HBox fx:id="hBox" alignment="CENTER" prefHeight="37.0" prefWidth="600.0" spacing="5.0" BorderPane.alignment="CENTER">
+                           <children>
+                              <Label text="Opération" />
+                              <Button fx:id="leftS" mnemonicParsing="false" onAction="#callLeftS" text="Left shift" />
+                              <Button fx:id="rightS" mnemonicParsing="false" onAction="#callRightS" text="Right shift" />
+                              <Button fx:id="or" mnemonicParsing="false" onAction="#callOr" text="Or" />
+                              <Button mnemonicParsing="false" onAction="#callXor" text="Xor" fx:id="xor" />
+                              <Button fx:id="not" mnemonicParsing="false" onAction="#callNot" text="Not" />
+                              <Button fx:id="and" mnemonicParsing="false" onAction="#callAnd" text="And" />
+                           </children>
+                        </HBox>
+                     </center>
+                  </BorderPane>
+               </content>
+            </Tab>
+        </tabs>
+      </TabPane>
+   </children>
+</AnchorPane>
