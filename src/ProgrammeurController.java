@@ -13,6 +13,8 @@ import javafx.util.converter.LongStringConverter;
 
 import java.math.BigInteger;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 public class ProgrammeurController implements Initializable {
@@ -102,6 +104,7 @@ public class ProgrammeurController implements Initializable {
 
 
     public void callLeftS(){
+
         System.out.println(Integer.parseInt(textArea.getText()));
         String curr = textArea.getText();
         //textArea.setText(curr>>1);
@@ -121,7 +124,17 @@ public class ProgrammeurController implements Initializable {
     public void callAnd(){
 
     }
-
+    public List getBytes(){
+        boolean firstPass=true;
+        List<String> allBinairy = new ArrayList<>();
+        for(int i=0;i<textArea.getText().length();i++){
+            if((i+1%8)==0&&!firstPass){
+                allBinairy.add(textArea.getText(i-8,i));
+            }
+            firstPass=false;
+        }
+        return allBinairy;
+    }
 
 
 }

@@ -44,8 +44,19 @@ public class Controller implements Initializable
             if(Character.isDigit(curr)||curr=='e'||curr=='π'){
                 try {
                     if (last.equals("")) {
-                        finalArray.add(Character.toString(curr));
-                        last = Character.toString(curr);
+                        switch(curr){
+                            case 'π':
+                                finalArray.add(Double.toString(Math.PI));
+                                break;
+                            case 'e':
+                                finalArray.add(Double.toString(Math.E));
+                                break;
+                                default:
+                                    finalArray.add(Character.toString(curr));
+                                    last = Character.toString(curr);
+                                    break;
+                        }
+
                     } else {
                         finalArray.remove(finalArray.size() - 1);
                         last += Character.toString(curr);
@@ -57,24 +68,24 @@ public class Controller implements Initializable
             }else if (curr=='*'){
                 int sizeTemp=temp.size();
                 for (int p =0;p<sizeTemp;p++){
-                    if(temp.peek().equals('*')||temp.peek().equals('/')){
+                    if(temp.peek().equals('*')||temp.peek().equals('/')||temp.peek().equals('^')){
                         finalArray.add(temp.pop().toString());
-                    }else
-                        break;
+                    }
                 }temp.add('*');
             }else if (curr=='/'){
                 int sizeTemp=temp.size();
                 for (int p =0;p<sizeTemp;p++){
-                    if(temp.peek().equals('*')||temp.peek().equals('/')){
+                    if(temp.peek().equals('*')||temp.peek().equals('/')||temp.peek().equals('^')){
                         finalArray.add(temp.pop().toString());
-                    }else{
-                        temp.add('/');
-                        break;
                     }
-
                 }temp.add('/');
             }else if (curr=='^'){
-                temp.add('^');
+                int sizeTemp=temp.size();
+                for (int p =0;p<sizeTemp;p++){
+                    if(temp.peek().equals('*')||temp.peek().equals('/')||temp.peek().equals('^')){
+                        finalArray.add(temp.pop().toString());
+                    }
+                }temp.add('^');
             }else if (curr=='('){
                 temp.add('(');
             }else if (curr==')'){
@@ -107,7 +118,9 @@ public class Controller implements Initializable
                         finalArray.add(temp.pop().toString());
                     }
                 }temp.add('+');
-            }else if (curr=='s'||curr=='i'||curr=='n'||curr=='o'||curr=='t'||curr=='a'||curr=='r') {
+            }else if (curr=='%') {
+                temp.add('%');
+            }else if (curr=='s'||curr=='i'||curr=='n'||curr=='o'||curr=='t'||curr=='a'||curr=='r'||curr=='c') {
                     lol += (Character.toString(curr));
                     if (lol.equals("sin")) {
                         temp.add('s');
@@ -147,12 +160,107 @@ public class Controller implements Initializable
         System.out.println((finalArray.toString()));
         System.out.println("Fini le string");
         boolean solved=false;
-        boolean gotFirst=false;
-        String leFirst="";
-        String leSecond="";
         String loperator="";
-        double rep;
-        double prem=19302;//BUGGED
+        double prem=707;//BUGGED
+        double deux=606;
+        int posOperator=0;
+        double thisRep=101;
+
+        while(!solved) {
+            for(int i=0;i<finalArray.size();i++) {
+                thisRep=101;
+                prem=707;
+                deux= 606;
+                String temp1 = finalArray.get(i);
+                if(temp1.equals("π")){
+                    temp1=Double.toString(Math.PI);
+                }
+                if (loperator.equals("")&&(temp1.equals("s") || temp1.equals("c") || temp1.equals("t") ||
+                        temp1.equals("r") || temp1.equals("*") || temp1.equals("^") || temp1.equals("%") || temp1.equals("m") || temp1.equals("+") ||
+                        temp1.equals("/")|| temp1.equals("j")|| temp1.equals("k")|| temp1.equals("l"))){
+                    loperator=temp1;
+                    posOperator=i;
+                }
+                if(!loperator.equals("")&&!(temp1.equals("s") || temp1.equals("c") || temp1.equals("t") ||
+                        temp1.equals("j")|| temp1.equals("k")|| temp1.equals("l"))){
+
+                    prem=Double.parseDouble(finalArray.get(posOperator-2));
+                    deux=Double.parseDouble(finalArray.get(posOperator-1));
+
+                    //REMOVE DE LARRAY
+                        finalArray.remove(posOperator);
+                        finalArray.remove(posOperator-1);
+                        //REMOVE PAS le posOperator-2 PARCEQUE IL LE REMPLACE APRÈS
+
+                    switch (loperator){
+                        case "r":
+                            thisRep=Math.pow(prem,1/deux);
+                            break;
+                        case "*":
+                            thisRep=prem*deux;
+                            break;
+                        case "^":
+                            thisRep=Math.pow(prem,deux);
+                            break;
+                        case "%":
+                            thisRep=prem%deux;
+                            break;
+                        case "/":
+                            thisRep=prem/deux;
+                            break;
+                        case "+":
+                            thisRep=prem+deux;
+                            break;
+                        case "-":
+                            thisRep=prem-deux;
+                            break;
+
+                    }
+                    loperator="";
+                    finalArray.set(posOperator-2,Double.toString(thisRep));
+
+                }
+                if(!loperator.equals("")&&(temp1.equals("s") || temp1.equals("c") || temp1.equals("t") ||
+                        temp1.equals("j")|| temp1.equals("k")|| temp1.equals("l"))) {
+
+                    prem=Double.parseDouble(finalArray.get(posOperator-1));
+
+                    finalArray.remove(posOperator);
+
+                    switch (loperator) {
+                        case "s":
+                            thisRep = Math.sin(prem);
+                            break;
+                        case "c":
+                            thisRep = Math.cos(prem);
+                            break;
+                        case "t":
+                            thisRep = Math.tan(prem);
+                            break;
+                        case "j":
+                            thisRep = Math.asin(prem);
+                            break;
+                        case "k":
+                            thisRep = Math.acos(prem);
+                            break;
+                        case "l":
+                            thisRep = Math.atan(prem);
+                            break;
+                    }
+                    loperator="";
+                    finalArray.set(posOperator-1,Double.toString(thisRep));
+                }
+            }
+            if(finalArray.size()==1){
+                solved=true;
+            }
+        }
+        calc.setValue(finalArray.get(0));
+        System.out.println(finalArray.get(0));
+
+
+
+        /*
         while(!solved){
             for(int i=0;i<finalArray.size();i++) {
                 String temp1 = finalArray.get(i);finalArray.set(i,"");
@@ -191,6 +299,7 @@ public class Controller implements Initializable
                         case("rac"):prem=Math.pow(prem,1/next);
                     }
                 }
+
             }for(int i=0;i<finalArray.size();i++){
                 solved=true;
                 if(!finalArray.get(i).equals("")){
@@ -200,6 +309,8 @@ public class Controller implements Initializable
         }
         calc.setValue(Double.toString(prem));
         finalArray.clear();
+        */
+
     }
     public void remove(){
         try {

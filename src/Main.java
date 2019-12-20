@@ -23,9 +23,9 @@ public class Main extends Application {
             tabPane.getTabs().add(new Tab("Scientifique",scient));
             tabPane.getTabs().add(new Tab("Programmeur",prog));
 
-
             primaryStage.setTitle("Calculatrice Scientifique");
             primaryStage.setScene(new Scene(tabPane));
+            primaryStage.setResizable(false);
             primaryStage.show();
 
 
