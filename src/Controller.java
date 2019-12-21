@@ -82,7 +82,7 @@ public class Controller implements Initializable
             }else if (curr=='^'){
                 int sizeTemp=temp.size();
                 for (int p =0;p<sizeTemp;p++){
-                    if(temp.peek().equals('*')||temp.peek().equals('/')||temp.peek().equals('^')){
+                    if(temp.peek().equals('^')){
                         finalArray.add(temp.pop().toString());
                     }
                 }temp.add('^');
@@ -107,14 +107,14 @@ public class Controller implements Initializable
             }else if (curr=='-'){
                 int sizeTemp=temp.size();
                 for (int p =0;p<sizeTemp;p++){
-                    if(temp.peek().equals('-')||temp.peek().equals('+')){
+                    if(temp.peek().equals('-')||temp.peek().equals('+')||temp.peek().equals('*')||temp.peek().equals('/')||temp.peek().equals('^')){
                         finalArray.add(temp.pop().toString());
                     }
                 }temp.add('-');
             }else if (curr=='+'){
                 int sizeTemp=temp.size();
                 for (int p =0;p<sizeTemp;p++){
-                    if(temp.peek().equals('-')||temp.peek().equals('+')){
+                    if(temp.peek().equals('-')||temp.peek().equals('+')||temp.peek().equals('*')||temp.peek().equals('/')||temp.peek().equals('^')){
                         finalArray.add(temp.pop().toString());
                     }
                 }temp.add('+');
@@ -257,59 +257,6 @@ public class Controller implements Initializable
         }
         calc.setValue(finalArray.get(0));
         System.out.println(finalArray.get(0));
-
-
-
-        /*
-        while(!solved){
-            for(int i=0;i<finalArray.size();i++) {
-                String temp1 = finalArray.get(i);finalArray.set(i,"");
-                if (loperator.equals("")&&(temp1.equals("s") || temp1.equals("c") || temp1.equals("t") ||
-                        temp1.equals("rac") || temp1.equals("*") || temp1.equals("^") || temp1.equals("%") || temp1.equals("-") || temp1.equals("+") ||
-                        temp1.equals("/")|| temp1.equals("j")|| temp1.equals("k")|| temp1.equals("l"))) {
-                    loperator = temp1;
-                } else {
-                    if (leFirst.equals("")) {
-                        leFirst = temp1;
-                    } else if (leSecond.equals("")) {
-                        leSecond = temp1;
-                    }
-                }
-                if((!leFirst.equals("")||!leSecond.equals(""))&&!loperator.equals("")){
-                    double next=10000;
-                    if(!gotFirst) {
-                        prem = Double.parseDouble(leFirst);gotFirst=true;
-                    }
-                    if(!leSecond.equals("")){
-                         next=Double.parseDouble(leSecond);
-                    }
-                    switch(loperator){
-                        case("+"):prem+=next;leSecond="";loperator="";break;
-                        case("-"):prem-=next;leSecond="";loperator="";break;
-                        case("/"):prem=prem/next;leSecond="";loperator="";break;
-                        case("%"):prem=prem%next;leSecond="";loperator="";break;
-                        case("^"):prem=Math.pow(prem,next);leSecond="";loperator="";break;
-                        case("*"):prem=prem*next;leSecond="";loperator="";break;
-                        case("s"):prem=Math.sin(prem);loperator="";break;
-                        case("c"):prem=Math.cos(prem);loperator="";break;
-                        case("t"):prem=Math.tan(prem);loperator="";break;
-                        case("j"):prem=Math.asin(prem);loperator="";break;//ARCSIN
-                        case("k"):prem=Math.acos(prem);loperator="";break;//ARCCOS
-                        case("l"):prem=Math.atan(prem);loperator="";break;//ARCTAN
-                        case("rac"):prem=Math.pow(prem,1/next);
-                    }
-                }
-
-            }for(int i=0;i<finalArray.size();i++){
-                solved=true;
-                if(!finalArray.get(i).equals("")){
-                    solved=false;
-                }
-            }
-        }
-        calc.setValue(Double.toString(prem));
-        finalArray.clear();
-        */
 
     }
     public void remove(){

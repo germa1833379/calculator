@@ -18,10 +18,13 @@ public class Main extends Application {
         try {
             Parent scient = FXMLLoader.load(getClass().getResource("calcuScientifique.fxml"));
             Parent prog = FXMLLoader.load(getClass().getResource("programmeur.fxml"));
+            Parent normal = FXMLLoader.load(getClass().getResource("sample.fxml"));
 
             TabPane tabPane = new TabPane();
+            tabPane.getTabs().add(new Tab("Normal & Conversions",normal));
             tabPane.getTabs().add(new Tab("Scientifique",scient));
             tabPane.getTabs().add(new Tab("Programmeur",prog));
+
 
             primaryStage.setTitle("Calculatrice Scientifique");
             primaryStage.setScene(new Scene(tabPane));
